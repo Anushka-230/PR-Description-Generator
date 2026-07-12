@@ -2,7 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import jwt from "jsonwebtoken";
-import generateToken from "../utility/generateToken.js";
+import generateToken from "../utils/generateToken.js";
+import ApiError from "../utils/ApiError.js";
 
 export const signupService = async ({ name, email, password }) => {
   // Validation
@@ -15,8 +16,8 @@ export const signupService = async ({ name, email, password }) => {
   }
 
   if (password.length < 6) {
-    throw new Error("Password must be at least 6 characters");
-  }
+    throw  new ApiError(400, "Password must be at least 6 characters");
+}
 
   // Check if user already exists
   const existingUser = await User.findOne({ email });
